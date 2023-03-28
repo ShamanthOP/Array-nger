@@ -13,7 +13,7 @@ const InsertionSort = (nums) => {
             j = j-1;
         }
 
-        addToTrace(trace, nums, [...lastSorted(nums), j]);
+        addToTrace(trace, nums, [...lastSorted(trace), j]);
     }
 
     return trace;
