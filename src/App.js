@@ -6,6 +6,7 @@ import { ALGORITHM, ALGORITHM_KEY, ALGORITHM_DESC } from './imports';
 import TopBar from "./components/organisms/TopBar";
 import AppDrawer from "./components/organisms/AppDrawer";
 import AppControls from "./components/molecules/AppControls";
+import SortVisulaizer from "./components/organisms/SortVisulaizer";
 
 const App = () => {
 
@@ -45,14 +46,20 @@ const App = () => {
 
   const handleAlgorithm = (algorithm) => {
     setAlgorithm(algorithm);
-    generateRandomArray();
   }
+
+  useEffect(() => {
+    generateRandomArray();
+  }, [algorithm]);
 
   const handleArraySize = (size) => {
     const newSize = Number(size);
     setArraySize(newSize);
-    generateRandomArray();
   }
+
+  useEffect(() => {
+    generateRandomArray();
+  }, [arraySize]);
 
   const toggleAppDrawer = () => {
     setAppDrawerOpen(!appDrawerOpen);
@@ -83,6 +90,14 @@ const App = () => {
 
       <AppDrawer drawerOpen={appDrawerOpen} toggledrawer={toggleAppDrawer}>{controls}</AppDrawer>
 
+      <main className="App__Body">
+        <SortVisulaizer 
+          array={array}
+          trace={trace}
+          colorKey={colorKey}
+          desc={description}
+        />
+      </main>
 
     </div>
   );

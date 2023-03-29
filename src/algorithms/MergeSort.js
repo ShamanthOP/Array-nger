@@ -9,13 +9,13 @@ const MergeSort = (nums) => {
             return;
         }
 
-        let midPoint = Math.floor((end-start)/2);
+        let midPoint = Math.floor((end+start)/2);
 
-        addToTrace(trace, nums, lastSorted(nums), [...createRange(start, midPoint)]);
+        addToTrace(trace, nums, lastSorted(trace), createRange(start, midPoint));
         mergeSort(nums, start, midPoint);
-        addToTrace(trace, nums, lastSorted(nums), [...createRange(midPoint, end)]);
+        addToTrace(trace, nums, lastSorted(trace), createRange(midPoint, end));
         mergeSort(nums, midPoint, end);
-
+        
         merge(nums, start, midPoint, end);
     }
 

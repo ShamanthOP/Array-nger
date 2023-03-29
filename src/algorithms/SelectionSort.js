@@ -14,7 +14,7 @@ const SelectionSort = (nums) => {
         }
         if(minIndex!==i) {
             addToTrace(trace, nums, lastSorted(trace), [], [i, minIndex]);
-            swap(nums[i], nums[minIndex]);
+            swap(nums, i, minIndex);
         }
         addToTrace(trace, nums, [...lastSorted(trace), i]);
     }
