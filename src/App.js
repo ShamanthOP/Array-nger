@@ -7,6 +7,7 @@ import TopBar from "./components/organisms/TopBar";
 import AppDrawer from "./components/organisms/AppDrawer";
 import AppControls from "./components/molecules/AppControls";
 import SortVisulaizer from "./components/organisms/SortVisulaizer";
+import Footer from "./components/molecules/Footer";
 
 const App = () => {
 
@@ -33,8 +34,11 @@ const App = () => {
     const randomArray = [...new Array(arraySize)].map(() => getRandomInt(arraySize*5));
     setArray(randomArray);
     setTrace([]);
-    createTrace();
   };
+
+  useEffect(() => {
+    createTrace();
+  }, [array]);
 
   useEffect(() => {
     generateRandomArray();
@@ -98,6 +102,8 @@ const App = () => {
           desc={description}
         />
       </main>
+
+      <Footer />
 
     </div>
   );

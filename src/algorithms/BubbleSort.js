@@ -46,7 +46,7 @@ export const BubbleSortDesc = {
             O(n<sup>2</sup>)
         </span>
     ),
-    averageCase: (
+    avgCase: (
         <span>
             O(n<sup>2</sup>)
         </span>

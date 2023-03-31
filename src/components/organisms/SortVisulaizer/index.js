@@ -1,7 +1,18 @@
 import './styles.css';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import SortChart from '../SortChart';
+import ColorKey from '../../molecules/ColorKey';
+import SortInfo from '../../molecules/SortInfo';
+import VisualizerControls from '../../molecules/VisulaizerControls';
+
+const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
+}
 
 const SortVisulaizer = ({
     array: arrayProps,
@@ -23,16 +34,21 @@ const SortVisulaizer = ({
     const [timeoutIds, setTimeoutIds] = useState([]);
     const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
+    const prevArray = usePrevious(array);
+    const prevTrace = usePrevious(trace);
+
     useEffect(() => {
-        _reset(arrayProps);
+        if(prevArray!==arrayProps) reset(arrayProps);
     }, [arrayProps]);
 
     useEffect(() => {
-        clearTimeouts();
-        setTrace(traceProps);
+        if(prevTrace!==traceProps) {
+            clearTimeouts();
+            setTrace(traceProps);
+        }
     }, [traceProps]);
 
-    const _reset = (array) => {
+    const reset = (array) => {
         setArray(array);
         setOriginalArray([...array]);
         setGroupA([]);
@@ -52,6 +68,80 @@ const SortVisulaizer = ({
         setTimeoutIds([]);
     }
 
+    const changeVisulaState = (visualState) => {
+        console.log("Visual State", visualState);
+        setArray(visualState.array);
+        setGroupA(visualState.groupA);
+        setGroupB(visualState.groupB);
+        setGroupC(visualState.groupC);
+        setGroupD(visualState.groupD);
+        setSortedIndices(visualState.sortedIndices);
+    }
+
+    const run = (newtrace) => {
+        const timeOuts = [];
+        const timer = 250 / playbackSpeed;
+
+        console.log("Trace", newtrace);
+        newtrace.forEach((item, i) => {
+            const timeoutId = setTimeout((item) => {
+                setTraceStep(prevStep => prevStep+1);
+                changeVisulaState(item);
+            }, i*timer, item);
+            timeOuts.push(timeoutId);
+        });
+
+        const timeoutId = setTimeout(clearTimeouts, newtrace.length*timer);
+        timeOuts.push(timeoutId);
+
+        setTimeoutIds(timeOuts);
+    }
+
+    const pause = () => {
+        clearTimeouts();
+    }
+
+    const continueAnimation = () => {
+        const newTrace = trace.slice(traceStep);
+        console.log("continue", newTrace, traceStep);
+        run(newTrace);
+    }
+
+    const stepForward = () => {
+        if(traceStep < trace.length - 1) {
+            const item = trace[traceStep+1];
+            setTraceStep(prevStep => prevStep+1);
+            changeVisulaState(item);
+        }
+    }
+
+    const stepBackward = () => {
+        if(traceStep > 0) {
+            const item = trace[traceStep-1];
+            setTraceStep(prevStep => prevStep-1);
+            changeVisulaState(item);
+        }
+    }
+
+    const repeat = () => {
+        clearTimeouts();
+        setArray(originalArray);
+        setTraceStep(-1);
+        run(trace);
+    }
+
+    const adjustPlaybackSpeed = (newSpeed) => {
+        pause();
+        const newPlayBackSpeed = Number(newSpeed.split('x')[0]);
+        setPlaybackSpeed(newPlayBackSpeed);
+    }
+
+    useEffect(() => {
+        if(traceStep>-1) {
+            continueAnimation();
+        }
+    }, [playbackSpeed]);
+
     return (
         <div className='SortVisualizer'>
             <SortChart 
@@ -63,6 +153,25 @@ const SortVisulaizer = ({
                 groupD={groupD}
                 sortedIndices={sortedIndices}
             />
+
+            <VisualizerControls 
+                onPlay={traceStep===-1 ? run.bind(this, trace) : continueAnimation}
+                onPause={pause.bind(this)}
+                onBackward={stepBackward.bind(this)}
+                onForward={stepForward.bind(this)}
+                onRepeat={repeat.bind(this)}
+                onAdjustSpeed={adjustPlaybackSpeed}
+                playing={timeoutIds.length > 0}
+                playDisabled={(traceStep >= trace.length - 1 && traceStep!==-1) || trace.length===0}
+                backwardDisabled={traceStep <= 0}
+                forwardDisabled={traceStep >= trace.length-1}
+                repeatDisabled={traceStep >= trace.length-1}
+                playbackSpeed={playbackSpeed}
+            />
+
+            <ColorKey {...colorKey} />
+
+            <SortInfo {...desc} />
         </div>
     );
 }
