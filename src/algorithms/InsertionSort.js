@@ -12,9 +12,9 @@ const InsertionSort = (nums) => {
             swap(nums, j, j-1);
             j = j-1;
         }
-
-        addToTrace(trace, nums, [...lastSorted(trace), j]);
     }
+
+    addToTrace(trace, nums, [...Array(nums.length).keys()])
 
     return trace;
 }

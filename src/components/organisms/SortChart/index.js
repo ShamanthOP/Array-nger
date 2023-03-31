@@ -1,7 +1,7 @@
 import './styles.css';
 import Bar from '../../atoms/Bar';
 
-const getBarsList = (
+const getBarsList = ({
     numbers,
     maxNum,
     groupA,
@@ -9,7 +9,8 @@ const getBarsList = (
     groupC,
     groupD,
     sortedIndices
-) => {
+}) => {
+    // console.log(sortedIndices);
     return (
         <>
             {numbers.map((number, index) => {
@@ -51,9 +52,10 @@ const SortChart = ({
     groupD,
     sortedIndices
 }) => {
+    // console.log("SortChart", sortedIndices);
     return (
         <div className='SortChart'>
-            {getBarsList(numbers, maxNum, groupA, groupB, groupB, groupC, groupD, sortedIndices)}
+            {getBarsList({numbers, maxNum, groupA, groupB, groupB, groupC, groupD, sortedIndices})}
         </div>
     );
 }

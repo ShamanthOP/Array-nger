@@ -4,7 +4,7 @@ import { addToTrace, createKey, lastSorted, newTrace, swap, createRange } from "
 const QuickSort = (nums) => {
     const trace = newTrace(nums);
 
-    const choosePivot = (nums, start, end) => {
+    const choosePivot = (start, end) => {
         return Math.floor(Math.random() * (end - start)) + start;
     }
 
@@ -39,7 +39,7 @@ const QuickSort = (nums) => {
             return;
         }
 
-        let pivot = choosePivot(nums, start, end);
+        let pivot = choosePivot(start, end);
 
         addToTrace(trace, nums, lastSorted(trace), [pivot]);
         swap(nums, start, pivot);

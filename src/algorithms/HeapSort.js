@@ -4,55 +4,55 @@ import { addToTrace, createKey, createRange, lastSorted, newTrace, swap } from "
 const HeapSort = (nums) => {
     const trace = newTrace(nums);
 
-    const buildMaxHeap = (nums) => {
-        const start = Math.floor(nums.length/2);
-        const heapSize = nums.length;
+    const buildMaxHeap = (array) => {
+        const start = Math.floor(array.length/2);
+        const heapSize = array.length;
 
         for(let i = start; i>=0; i--) {
-            maxHeapify(nums, i, heapSize);
+            maxHeapify(array, i, heapSize);
         }
-        addToTrace(trace, nums, lastSorted(trace), [], [], [], createRange(0, nums.length));
+        addToTrace(trace, array, lastSorted(trace), [], [], [], createRange(0, array.length));
     }
 
-    const maxHeapify = (nums, i, heapSize) => {
+    const maxHeapify = (array, i, heapSize) => {
         const left = (i) => 2 * i + 1;
         const right = (i) => 2 * i + 2;
 
         const leftChild = left(i);
         const rightChild = right(i);
 
-        addToTrace(trace, nums, lastSorted(trace), [i, leftChild]);
-        let largest = leftChild < heapSize && nums[leftChild] > nums[i] ? leftChild : i;
+        addToTrace(trace, array, lastSorted(trace), [i, leftChild]);
+        let largest = leftChild < heapSize && array[leftChild] > array[i] ? leftChild : i;
     
-        addToTrace(trace, nums, lastSorted(trace), [largest, rightChild]);
-        if (rightChild < heapSize && nums[rightChild] > nums[largest]) largest = rightChild;
+        addToTrace(trace, array, lastSorted(trace), [largest, rightChild]);
+        if (rightChild < heapSize && array[rightChild] > array[largest]) largest = rightChild;
 
         if (largest !== i) {
-            addToTrace(trace, nums, lastSorted(trace), [], [i, largest]);
-            swap(nums, i, largest);
-            addToTrace(trace, nums, lastSorted(trace), [], [i, largest]);
+            addToTrace(trace, array, lastSorted(trace), [], [i, largest]);
+            swap(array, i, largest);
+            addToTrace(trace, array, lastSorted(trace), [], [i, largest]);
         
-            maxHeapify(nums, largest, heapSize);
+            maxHeapify(array, largest, heapSize);
         }
     }
 
-    const heapSort = (nums) => {
-        buildMaxHeap(nums);
-        let heapSize = nums.length;
+    const heapSort = (array) => {
+        buildMaxHeap(array);
+        let heapSize = array.length;
 
-        for(let i = nums.length-1; i>0; i--) {
-            addToTrace(trace, nums, lastSorted(trace), [], [0, i]);
-            swap(nums, 0, i);
-            addToTrace(trace, nums, [...lastSorted(trace), i], [], [0, i]);
+        for(let i = array.length-1; i>0; i--) {
+            addToTrace(trace, array, lastSorted(trace), [], [0, i]);
+            swap(array, 0, i);
+            addToTrace(trace, array, [...lastSorted(trace), i], [], [0, i]);
 
             heapSize -= 1;
-            maxHeapify(nums, heapSize);
+            maxHeapify(array, 0, heapSize);
 
-            addToTrace(trace, nums, lastSorted(trace), [], [], [], createRange(0, heapSize));
+            addToTrace(trace, array, lastSorted(trace), [], [], [], createRange(0, heapSize));
 
         }
 
-        addToTrace(trace, nums, [...lastSorted(trace), 0]);
+        addToTrace(trace, array, [...lastSorted(trace), 0]);
     }
 
     heapSort(nums);

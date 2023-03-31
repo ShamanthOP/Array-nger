@@ -83,7 +83,7 @@ const SortVisulaizer = ({
         const timeOuts = [];
         const timer = 250 / playbackSpeed;
 
-        console.log("Trace", newtrace);
+        // console.log("Trace", newtrace);
         newtrace.forEach((item, i) => {
             const timeoutId = setTimeout((item) => {
                 setTraceStep(prevStep => prevStep+1);

@@ -9,7 +9,9 @@ const SelectionSort = (nums) => {
         for(let j = i+1; j<nums.length; j++) {
             addToTrace(trace, nums, lastSorted(trace), [minIndex, j]);
             if(nums[j]<nums[minIndex]) {
+                addToTrace(trace, nums, lastSorted(trace), [minIndex], [j]);
                 minIndex = j;
+                addToTrace(trace, nums, lastSorted(trace), [minIndex], [j]);
             }
         }
         if(minIndex!==i) {

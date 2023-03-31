@@ -1,18 +1,31 @@
 import './styles.css';
 
+import Button from '../../atoms/Button';
+import { GoMarkGithub } from "react-icons/go";
+import { BsLinkedin } from "react-icons/bs";
+
+
 const Footer = () => {
     return (
         <footer className="Footer">
             <section>
-                <span className="Footer__Heart">&hearts;</span>
-                <a
-                    href=""
+                <Button
+                    href="https://github.com/ShamanthOP"
+                    icon={GoMarkGithub}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="Footer__Link"
-                >
-                    Shamanth
-                </a>
+                />
+            </section>
+
+            <section>
+                <Button
+                    href="https://www.linkedin.com/in/shamanth-u-b9b332204/"
+                    icon={BsLinkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="Footer__Link"
+                />
             </section>
     
             <section className="Footer__Items">
@@ -25,7 +38,7 @@ const Footer = () => {
                 Demo
             </a>
             <a
-                href=""
+                href="https://github.com/ShamanthOP/Array-nger"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="Footer__Link"

@@ -55,8 +55,8 @@ const MergeSort = (nums) => {
         }
     }
 
-    mergeSort(nums, 0, nums.length-1);
-    addToTrace(trace, nums, [...createRange(0, nums.length)]);
+    mergeSort(nums, 0, nums.length);
+    addToTrace(trace, nums, [...Array(nums.length).keys()]);
 
     return trace;
 }
