@@ -5,6 +5,7 @@ import SortChart from '../SortChart';
 import ColorKey from '../../molecules/ColorKey';
 import SortInfo from '../../molecules/SortInfo';
 import VisualizerControls from '../../molecules/VisulaizerControls';
+import ProgressBar from '../../molecules/ProgressBar';
 
 const usePrevious = (value) => {
     const ref = useRef();
@@ -153,6 +154,10 @@ const SortVisulaizer = ({
                 groupD={groupD}
                 sortedIndices={sortedIndices}
             />
+
+            <div className='SortVisualizer__ProgressBar'>
+                <ProgressBar width={trace.length>0 ? (traceStep/(trace.length-1))*100 : 0} />
+            </div>
 
             <VisualizerControls 
                 onPlay={traceStep===-1 ? run.bind(this, trace) : continueAnimation}
